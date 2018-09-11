@@ -1,41 +1,48 @@
 class Sorter {
-  constructor() {
-    this.array = [];
-  }
+    constructor() {
+        this.arr = [];
+        this.defaultCompare = function(a, b){
+            return a - b;
+        };
+    }
 
-  add(element) {
-    this.array.push(element);
-  }
+    add(element) {
+        this.arr.push(element);
+    }
 
-  at(index) {
-    return this.array[index];
-  }
-  get length() {
-    return this.array.length;
-  }
+    at(index) {
+        return this.arr[index];
+    }
 
-  toArray() {
-    return this.array;
-  }
+    get length() {
+        return this.arr.length;
+    }
 
-  sort(indices) {
-    let newMass = [];
-    indices = indices.sort() || [];
-      for(let i = 0; i < indices.length; i++) {
-          if (this.array[indices[i]]) {
-              newMass.push(this.array[indices[i]]);
-          }
-      }
-      newMass.sort(function(a,b){return a - b});
-      for(let i=0; i < indices.length; i++){
-        this.array[indices[i]]= newMass[i];
-      }
-      return this.array;
-  }
+    toArray() {
+        return this.arr;
+    }
 
-  setComparator(compareFunction) {
-    return this.array.sort(compareFunction());
-  }
+    sort(indices) {
+        indices.sort(function(a, b){
+            return a - b;
+        });
+        let tempArr = [];
+
+        for (let i = 0; i < indices.length; i++) {
+            tempArr.push(this.arr[indices[i]]);
+        }
+
+        tempArr.sort(this.defaultCompare);
+
+        for(let i = 0; i < indices.length; i++) {
+            this.arr.splice(indices[i], 1, tempArr[i]);
+        }
+
+    }
+
+    setComparator(compareFunction) {
+        this.defaultCompare = compareFunction;
+    }
 }
 
 module.exports = Sorter;
